@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  post 'register', to: 'registrations#create'
+  get 'users/confirm_email/:token', to: 'users#confirm_email'
 end

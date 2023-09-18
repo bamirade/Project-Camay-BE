@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0;">
+  <div style="background-color: #f4f4f4; padding: 20px;">
+    <h1 style="color: #333;">Welcome!</h1>
+    <p>Please confirm your account by clicking the link below:</p>
+    <a href="<%= url_for(controller: 'users', action: 'confirm_email', token: @user.confirmation_token, only_path: false) %>" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none;">Confirm Email</a>
+  </div>
+</body>
+</html>
