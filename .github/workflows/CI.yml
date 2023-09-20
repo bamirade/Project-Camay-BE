@@ -1,0 +1,20 @@
+name: Run RSpec
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      - name: Prepare DB
+        run: |
+          sudo apt-get install -y sqlite3 libsqlite3-dev
+          bundle exec rails db:environment:set RAILS_ENV=test
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+      - run: bundle exec rspec
+      - run: bundle exec rubocop
