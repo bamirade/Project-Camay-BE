@@ -1,9 +1,13 @@
-name: Run RSpec
+name: CI Pipeline
 on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
