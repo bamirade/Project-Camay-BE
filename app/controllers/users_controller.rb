@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:confirm_email]
+
   def confirm_email
     user = User.find_by(confirmation_token: params[:token])
 

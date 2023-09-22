@@ -60,3 +60,4 @@ gem 'bcrypt'
 gem 'jwt'
 gem 'pg'
 gem 'rack-cors'
+gem "aws-sdk-s3", require: false
