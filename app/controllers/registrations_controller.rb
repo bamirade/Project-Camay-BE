@@ -24,7 +24,7 @@ class RegistrationsController < ApplicationController
 
     if user
       if user.status
-        render json: { message: 'User account is already confirmed' }, status: :unprocessable_entity
+        render json: { error: 'User account is already confirmed' }, status: :unprocessable_entity
       else
         new_confirmation_token = SecureRandom.urlsafe_base64
         user.update_column(:confirmation_token, new_confirmation_token)
