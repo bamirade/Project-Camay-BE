@@ -10,7 +10,9 @@ class SessionsController < ApplicationController
           token = AuthHelper.generate_token(user.id, user.user_type)
           user_data = { token: token, user_type: user.user_type }
 
-          # Check if the user is a seller and include seller-specific information
+          decoded_token = AuthHelper.decode_token(token)
+          user_data[:decoded_token] = decoded_token if decoded_token
+
           if user.user_type == 'Seller'
             seller = user.seller
             user_data[:seller_info] = {
