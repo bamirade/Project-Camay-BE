@@ -8,21 +8,7 @@ class SessionsController < ApplicationController
       if user.authenticate(params[:password])
         if user.status
           token = AuthHelper.generate_token(user.id, user.user_type)
-          user_data = { token: token, user_type: user.user_type }
-
-          decoded_token = AuthHelper.decode_token(token)
-          user_data[:decoded_token] = decoded_token if decoded_token
-
-          if user.user_type == 'Seller'
-            seller = user.seller
-            user_data[:seller_info] = {
-              bio: seller.bio,
-              portfolio: seller.portfolio,
-              seller_rating: seller.seller_rating,
-              avatar_url: seller.avatar.url,
-              cover_url: seller.cover.url
-            }
-          end
+          user_data = { token: token, user_type: user.user_type, username: user.username }
 
           render json: user_data, status: :ok
         else

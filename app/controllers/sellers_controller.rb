@@ -1,5 +1,6 @@
 class SellersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
+  include ActiveStorage::SetCurrent
 
   def index
     sellers = User.where(user_type: 'Seller').includes(:seller).all

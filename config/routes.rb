@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#login'
 
   get 'users/confirm_email/:token', to: 'users#confirm_email'
+  get 'users/info/', to: 'users#user_info'
 
   get 'artists', to: 'sellers#index'
   get 'artists/:username', to: 'sellers#show'
