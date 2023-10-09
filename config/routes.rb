@@ -13,4 +13,8 @@ Rails.application.routes.draw do
 
   get 'artists', to: 'sellers#index'
   get 'artists/:username', to: 'sellers#show'
+  delete 'artists/avatar_url/delete/:id', to: 'sellers#avatar_destroy'
+  patch 'artists/avatar_url/update/:id', to: 'sellers#avatar_update'
+  delete 'artists/cover_url/delete/:id', to: 'sellers#cover_destroy'
+  patch 'artists/cover_url/update/:id', to: 'sellers#cover_update'
 end

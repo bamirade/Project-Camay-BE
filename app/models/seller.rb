@@ -15,4 +15,5 @@ class Seller < ApplicationRecord
     self.portfolio ||= ''
     self.seller_rating ||= 0.0
   end
+
 end
