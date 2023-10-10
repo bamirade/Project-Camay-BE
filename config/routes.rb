@@ -17,4 +17,13 @@ Rails.application.routes.draw do
   patch 'artists/avatar_url/update/:id', to: 'sellers#avatar_update'
   delete 'artists/cover_url/delete/:id', to: 'sellers#cover_destroy'
   patch 'artists/cover_url/update/:id', to: 'sellers#cover_update'
+  delete 'artists/works1_url/delete/:id', to: 'sellers#works1_destroy'
+  patch 'artists/works1_url/update/:id', to: 'sellers#works1_update'
+  delete 'artists/works2_url/delete/:id', to: 'sellers#works2_destroy'
+  patch 'artists/works2_url/update/:id', to: 'sellers#works2_update'
+  delete 'artists/works3_url/delete/:id', to: 'sellers#works3_destroy'
+  patch 'artists/works3_url/update/:id', to: 'sellers#works3_update'
+  delete 'artists/works4_url/delete/:id', to: 'sellers#works4_destroy'
+  patch 'artists/works4_url/update/:id', to: 'sellers#works4_update'
+  patch 'artists/update_bio/:id', to: 'sellers#update_bio'
 end

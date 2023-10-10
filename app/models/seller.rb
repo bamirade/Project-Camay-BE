@@ -1,6 +1,8 @@
 class Seller < ApplicationRecord
   belongs_to :user
 
+  validates :bio, presence: true, length: { maximum: 101 }
+
   after_initialize :set_defaults
 
   has_one_attached :avatar

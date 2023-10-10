@@ -1,5 +1,8 @@
 class SellersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :find_user, only: %i[avatar_update cover_update works1_update works2_update works3_update works4_update avatar_destroy cover_destroy works1_destroy works2_destroy works3_destroy works4_destroy update_bio]
+  before_action :set_image_type, only: %i[avatar_update cover_update works1_update works2_update works3_update works4_update]
+
   include ActiveStorage::SetCurrent
 
   def index
@@ -38,73 +41,104 @@ class SellersController < ApplicationController
   end
 
   def avatar_update
-    user = User.find(params[:id])
-
-    if update_avatar[:avatar]
-      begin
-        webp_io = user.convert_to_webp(update_avatar[:avatar].tempfile)
-      rescue => e
-        render json: { error: "Error converting image to WebP: #{e.message}" }, status: :unprocessable_entity
-        return
-      end
-    end
-
-    if user.seller.update_attribute(:avatar, webp_io)
-      render json: { user: user.seller.avatar.url }, status: :ok
-    else
-      render json: { errors: user.errors.full_messages[0] }, status: :unprocessable_entity
-    end
+    update_image(:avatar)
   end
 
   def cover_update
-    user = User.find(params[:id])
+    update_image(:cover)
+  end
 
-    if update_cover[:cover]
-      begin
-        webp_io = user.convert_to_webp(update_cover[:cover].tempfile)
-      rescue => e
-        render json: { error: "Error converting image to WebP: #{e.message}" }, status: :unprocessable_entity
-        return
-      end
-    end
+  def works1_update
+    update_image(:works1)
+  end
 
-    if user.seller.update_attribute(:cover, webp_io)
-      render json: { user: user.seller.cover.url }, status: :ok
-    else
-      render json: { errors: user.errors.full_messages[0] }, status: :unprocessable_entity
-    end
+  def works2_update
+    update_image(:works2)
+  end
+
+  def works3_update
+    update_image(:works3)
+  end
+
+  def works4_update
+    update_image(:works4)
   end
 
   def avatar_destroy
-    user = User.find(params[:id])
-
-    if user.seller.avatar.attached?
-      user.seller.avatar.purge
-      render json: { message: "Seller avatar deleted successfully" }, status: :no_content
-    else
-      render json: { errors: user.errors.full_messages[0] }, status: :unprocessable_entity
-    end
+    destroy_image(:avatar, 'Seller avatar')
   end
 
   def cover_destroy
-    user = User.find(params[:id])
+    destroy_image(:cover, 'Seller cover')
+  end
 
-    if user.seller.cover.attached?
-      user.seller.cover.purge
-      render json: { message: "Seller cover deleted successfully" }, status: :no_content
+  def works1_destroy
+    destroy_image(:works1, 'Seller works 1')
+  end
+
+  def works2_destroy
+    destroy_image(:works2, 'Seller works 2')
+  end
+
+  def works3_destroy
+    destroy_image(:works3, 'Seller works 3')
+  end
+
+  def works4_destroy
+    destroy_image(:works4, 'Seller works 4')
+  end
+
+  def update_bio
+    seller = @user&.seller
+
+    if seller
+      if seller.update(bio_params)
+        render json: { message: 'Bio updated successfully' }
+      else
+        render json: { errors: seller.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { errors: user.errors.full_messages[0] }, status: :unprocessable_entity
+      render json: { errors: 'Seller not found for this user' }, status: :not_found
     end
   end
 
   private
 
-  def update_avatar
-    params.require(:user).permit(:avatar)
+  def find_user
+    @user = User.find(params[:id])
   end
 
-  def update_cover
-    params.require(:user).permit(:cover)
+  def set_image_type
+    @image_type = action_name.to_sym
   end
 
+  def update_image(image_param)
+    if params[:user][image_param]
+      begin
+        webp_io = @user.convert_to_webp(params[:user][image_param].tempfile, @image_type.to_s)
+      rescue => e
+        render json: { error: "Error converting image to WebP: #{e.message}" }, status: :unprocessable_entity
+        return
+      end
+    end
+
+    if @user.seller.update_attribute(image_param, webp_io)
+      render json: { user: @user.seller.send(image_param).url }, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages[0] }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy_image(image_param, success_message)
+    if @user.seller.send(image_param).attached?
+      @user.seller.send(image_param).purge
+      render json: { message: "#{success_message} deleted successfully" }, status: :no_content
+    else
+      render json: { errors: @user.errors.full_messages[0] }, status: :unprocessable_entity
+    end
+  end
+
+  def bio_params
+    params.require(:user).require(:seller).permit(:bio)
+  end
 end
