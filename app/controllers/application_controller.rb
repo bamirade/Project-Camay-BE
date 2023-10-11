@@ -19,9 +19,9 @@ class ApplicationController < ActionController::API
 
     case user_type
     when 'Buyer'
-      Buyer.find_by(user_id: user_id)
+      Buyer.find_by(user_id: user_id)&.user
     when 'Seller'
-      Seller.find_by(user_id: user_id)
+      Seller.find_by(user_id: user_id)&.user
     else
       nil
     end

@@ -12,7 +12,7 @@ RSpec.describe UserMailer, type: :mailer do
       expect(email.subject).to eq('Confirm Your Email')
       expect(email.to).to eq([user.email])
       expect(email.from).to eq([ENV['GMAIL_USERNAME']])
-      expect(email.body).to include('Please confirm your account')
+      expect(email.body).to include('Welcome to Project:CAMAY!')
     end
   end
 
