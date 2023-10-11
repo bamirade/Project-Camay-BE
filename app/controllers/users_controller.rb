@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:confirm_email]
+  before_action :find_user, only: [:update_password, :update_info]
   include ActiveStorage::SetCurrent
 
   def confirm_email
@@ -35,6 +36,35 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_password
+    if @user.update(user_password)
+      render json: { message: 'Password successfully updated' }
+    else
+      render json: { error: 'Failed to update password', errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
+  def update_info
+    if @user.update_columns(user_params.to_h)
+      render json: { message: 'User information successfully updated' }
+    else
+      render json: { error: 'Failed to update user information', errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+
+  private
+
+  def find_user
+    @user = current_user
+  end
+
+  def user_params
+    params.require(:user).permit(:email, :city, :contact_information)
+  end
+
+  def user_password
+    params.require(:user).permit(:password)
+  end
 
 end

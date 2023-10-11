@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   get 'users/confirm_email/:token', to: 'users#confirm_email'
   get 'users/info/', to: 'users#user_info'
+  patch 'users/update_password', to: 'users#update_password'
+  patch 'users/update_info', to: 'users#update_info'
 
   get 'artists', to: 'sellers#index'
   get 'artists/:username', to: 'sellers#show'
