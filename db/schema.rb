@@ -10,12 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_150500) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_12_072522) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "btree_gin"
+  enable_extension "btree_gist"
+  enable_extension "citext"
+  enable_extension "cube"
+  enable_extension "dblink"
+  enable_extension "dict_int"
+  enable_extension "dict_xsyn"
+  enable_extension "earthdistance"
+  enable_extension "fuzzystrmatch"
+  enable_extension "hstore"
+  enable_extension "intarray"
+  enable_extension "ltree"
+  enable_extension "pg_stat_statements"
+  enable_extension "pg_trgm"
+  enable_extension "pgcrypto"
+  enable_extension "pgrowlocks"
+  enable_extension "pgstattuple"
+  enable_extension "plpgsql"
+  enable_extension "tablefunc"
+  enable_extension "unaccent"
+  enable_extension "uuid-ossp"
+  enable_extension "xml2"
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -34,23 +58,46 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_150500) do
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
-    t.integer "blob_id", null: false
+    t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "buyers", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_buyers_on_user_id"
+  end
+
+  create_table "commission_types", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.bigint "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["seller_id"], name: "index_commission_types_on_seller_id"
+  end
+
+  create_table "commissions", force: :cascade do |t|
+    t.bigint "buyer_id", null: false
+    t.bigint "seller_id", null: false
+    t.bigint "commission_type_id", null: false
+    t.decimal "price"
+    t.string "stage"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_commissions_on_buyer_id"
+    t.index ["commission_type_id"], name: "index_commissions_on_commission_type_id"
+    t.index ["seller_id"], name: "index_commissions_on_seller_id"
   end
 
   create_table "sellers", force: :cascade do |t|
     t.text "bio"
     t.text "portfolio"
     t.float "seller_rating"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sellers_on_user_id"
@@ -72,5 +119,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_150500) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "buyers", "users"
+  add_foreign_key "commission_types", "sellers"
+  add_foreign_key "commissions", "buyers"
+  add_foreign_key "commissions", "commission_types"
+  add_foreign_key "commissions", "sellers"
   add_foreign_key "sellers", "users"
 end

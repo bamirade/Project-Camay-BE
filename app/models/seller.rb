@@ -1,5 +1,8 @@
 class Seller < ApplicationRecord
   belongs_to :user
+  has_many :commissions
+  has_many :commission_types
+
 
   validates :bio, presence: true, length: { maximum: 101 }
 

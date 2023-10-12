@@ -28,4 +28,9 @@ Rails.application.routes.draw do
   delete 'artists/works4_url/delete/:id', to: 'sellers#works4_destroy'
   patch 'artists/works4_url/update/:id', to: 'sellers#works4_update'
   patch 'artists/update_bio/:id', to: 'sellers#update_bio'
+
+  post 'commission_types/create', to: 'commission_types#create'
+  get 'commission_types/my_commissions', to: 'commission_types#my_commissions'
+  patch 'commission_types/my_commissions/:id', to: 'commission_types#update_commissions'
+  delete 'commission_types/my_commissions/:id', to: 'commission_types#delete_commissions'
 end
