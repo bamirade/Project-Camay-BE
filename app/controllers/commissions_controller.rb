@@ -32,7 +32,8 @@ class CommissionsController < ApplicationController
           title: commission.commission_type.title,
           price: commission.price,
           stage: commission.stage,
-          description: commission.description || ""
+          description: commission.description || "",
+          rating: commission.rating || ""
         }
       end
 
@@ -53,7 +54,8 @@ class CommissionsController < ApplicationController
           title: commission.commission_type.title,
           price: commission.price,
           stage: commission.stage,
-          description: commission.description || ""
+          description: commission.description || "",
+          rating: commission.rating || nil
         }
       end
 
@@ -93,6 +95,25 @@ class CommissionsController < ApplicationController
       render json: { error: "Commission stage must be 'InProgress' for update" }, status: :unprocessable_entity
     end
   end
+
+  def rate
+    @commission = Commission.find_by(id: params[:id])
+
+    if @commission.stage == "Completed" && current_user.user_type == 'Buyer'
+      if params[:rating].to_i >= 1 && params[:rating].to_i <= 5
+        if @commission.update(rating: params[:rating])
+          render json: { message: "Commission rated successfully" }
+        else
+          render json: { errors: @commission.errors.full_messages }, status: :unprocessable_entity
+        end
+      else
+        render json: { error: "Rating must be greater than 1" }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Commission stage must be 'Completed' for update" }, status: :unprocessable_entity
+    end
+  end
+
 
 
   private

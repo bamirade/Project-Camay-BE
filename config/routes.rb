@@ -40,4 +40,5 @@ Rails.application.routes.draw do
   get 'commission/buyer', to: 'commissions#buyer_commissions'
   patch 'commission/Pending/:id', to: 'commissions#update_progress'
   patch 'commission/InProgress/:id', to: 'commissions#update_complete'
+  patch 'commission/rate/:id', to: 'commissions#rate'
 end

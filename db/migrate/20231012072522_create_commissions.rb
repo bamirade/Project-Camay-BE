@@ -7,6 +7,7 @@ class CreateCommissions < ActiveRecord::Migration[7.0]
       t.decimal :price
       t.string :stage
       t.string :description
+      t.float :rating
 
       t.timestamps
     end
