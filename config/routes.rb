@@ -34,4 +34,10 @@ Rails.application.routes.draw do
   patch 'commission_types/my_commissions/:id', to: 'commission_types#update_commissions'
   delete 'commission_types/my_commissions/:id', to: 'commission_types#delete_commissions'
   get 'commission_types/:username', to: 'commission_types#commissions'
+
+  post 'commission/create', to: 'commissions#create'
+  get 'commission/seller', to: 'commissions#seller_commissions'
+  get 'commission/buyer', to: 'commissions#buyer_commissions'
+  patch 'commission/Pending/:id', to: 'commissions#update_progress'
+  patch 'commission/InProgress/:id', to: 'commissions#update_complete'
 end

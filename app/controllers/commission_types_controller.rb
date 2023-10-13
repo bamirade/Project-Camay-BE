@@ -46,7 +46,7 @@ class CommissionTypesController < ApplicationController
       if seller && seller.commission_types.any?
         render json: seller.commission_types
       else
-        render json: { error: "No commission types found for this user's seller" }, status: :not_found
+        render json: [], status: :ok
       end
     else
       render json: { error: "User not found" }, status: :not_found

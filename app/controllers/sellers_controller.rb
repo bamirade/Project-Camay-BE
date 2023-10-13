@@ -28,9 +28,6 @@ class SellersController < ApplicationController
     render json: { data: seller_data }
   end
 
-
-
-
   def show
     username = params[:username]
     seller = User.find_by(username: username, user_type: 'Seller')
