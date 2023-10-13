@@ -1,4 +1,5 @@
 class CommissionTypesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:commissions]
   before_action :find_user, only: [:create, :my_commissions, :update_commissions, :delete_commissions]
 
   def create
@@ -35,6 +36,20 @@ class CommissionTypesController < ApplicationController
       render json: { message: "Commission deleted successfully" }, status: :no_content
     else
       render json: { error: "Failed to delete commission" }, status: :unprocessable_entity
+    end
+  end
+
+  def commissions
+    user = User.find_by(username: params[:username])
+    if user
+      seller = user.seller
+      if seller && seller.commission_types.any?
+        render json: seller.commission_types
+      else
+        render json: { error: "No commission types found for this user's seller" }, status: :not_found
+      end
+    else
+      render json: { error: "User not found" }, status: :not_found
     end
   end
 

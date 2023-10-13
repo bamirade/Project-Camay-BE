@@ -6,17 +6,29 @@ class SellersController < ApplicationController
   include ActiveStorage::SetCurrent
 
   def index
-    sellers = User.where(user_type: 'Seller').includes(:seller).all
+    sellers = User.where(user_type: 'Seller', status: true).includes(:seller).all
     seller_data = sellers.map do |seller|
-      {
-        username: seller.username,
-        city: seller.city,
-        avatar_url: seller.seller&.avatar&.service_url,
-        rating: seller.seller&.seller_rating || 0.0
-      }
+      if seller.seller.present?
+        avatar_url = seller.seller.avatar.attached? ? url_for(seller.seller.avatar) : nil
+        {
+          username: seller.username,
+          city: seller.city,
+          avatar_url: avatar_url,
+          rating: seller.seller.seller_rating
+        }
+      else
+        {
+          username: seller.username,
+          city: seller.city,
+          avatar_url: nil,
+          rating: 0.0
+        }
+      end
     end
     render json: { data: seller_data }
   end
+
+
 
 
   def show

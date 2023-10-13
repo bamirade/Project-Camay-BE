@@ -4,7 +4,7 @@ class Seller < ApplicationRecord
   has_many :commission_types
 
 
-  validates :bio, presence: true, length: { maximum: 101 }
+  validates :bio, length: { maximum: 101 }
 
   after_initialize :set_defaults
 

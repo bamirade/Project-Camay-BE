@@ -33,4 +33,5 @@ Rails.application.routes.draw do
   get 'commission_types/my_commissions', to: 'commission_types#my_commissions'
   patch 'commission_types/my_commissions/:id', to: 'commission_types#update_commissions'
   delete 'commission_types/my_commissions/:id', to: 'commission_types#delete_commissions'
+  get 'commission_types/:username', to: 'commission_types#commissions'
 end
