@@ -38,7 +38,7 @@
     <h1>Your Commission was Marked as Completed by the Buyer</h1>
     <p>The buyer has marked your commission as completed. Please check the details below:</p>
     <p><strong>Commission Type:</strong> <%= @commission.commission_type.title %></p>
-    <p><strong>Price:</strong> PHP <%= number_to_currency(@commission.price) %></p>
+    <p><strong>Price:</strong> PHP<%= (@commission.price) %></p>
     <p><strong>Description:</strong> <%= @commission.description %></p>
     <p><strong>Status:</strong> <%= @commission.stage %></p>
     <p>If you have any questions or need further assistance, please feel free to reach out to us via this email address. We're here to ensure a smooth experience for you. 🤝</p>

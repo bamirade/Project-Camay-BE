@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       user.update_column(:confirmation_token, nil)
       UserMailer.approval_email(user).deliver_now
 
-      response.headers['Refresh'] = '5;url=http://localhost:5173/login'
+      response.headers['Refresh'] = '5;url=http://project-camay-pgcd.onrender.com/login'
       render json: { message: "Email confirmed. Redirecting to login page..." }, status: :ok
     else
       render json: { error: "Invalid confirmation token" }, status: :unprocessable_entity
@@ -45,12 +45,13 @@ class UsersController < ApplicationController
   end
 
   def update_info
-    if @user.update_columns(user_params.to_h)
+    if valid_email?(user_params[:email]) && @user.update_columns(user_params.to_h)
       render json: { message: 'User information successfully updated' }
     else
-      render json: { error: 'Failed to update user information', errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'Failed to update user information', errors: ['Invalid email format'] }, status: :unprocessable_entity
     end
   end
+
 
   private
 
@@ -64,6 +65,12 @@ class UsersController < ApplicationController
 
   def user_password
     params.require(:user).permit(:password)
+  end
+
+  def valid_email?(email)
+    email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
+    email.match?(email_regex)
   end
 
 end

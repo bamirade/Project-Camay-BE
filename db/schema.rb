@@ -11,30 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_10_12_072522) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "btree_gin"
-  enable_extension "btree_gist"
-  enable_extension "citext"
-  enable_extension "cube"
-  enable_extension "dblink"
-  enable_extension "dict_int"
-  enable_extension "dict_xsyn"
-  enable_extension "earthdistance"
-  enable_extension "fuzzystrmatch"
-  enable_extension "hstore"
-  enable_extension "intarray"
-  enable_extension "ltree"
-  enable_extension "pg_stat_statements"
-  enable_extension "pg_trgm"
-  enable_extension "pgcrypto"
-  enable_extension "pgrowlocks"
-  enable_extension "pgstattuple"
-  enable_extension "plpgsql"
-  enable_extension "tablefunc"
-  enable_extension "unaccent"
-  enable_extension "uuid-ossp"
-  enable_extension "xml2"
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -64,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_12_072522) do
   end
 
   create_table "buyers", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_buyers_on_user_id"
@@ -73,19 +49,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_12_072522) do
   create_table "commission_types", force: :cascade do |t|
     t.string "title"
     t.decimal "price"
-    t.bigint "seller_id", null: false
+    t.integer "seller_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["seller_id"], name: "index_commission_types_on_seller_id"
   end
 
   create_table "commissions", force: :cascade do |t|
-    t.bigint "buyer_id", null: false
-    t.bigint "seller_id", null: false
-    t.bigint "commission_type_id", null: false
+    t.integer "buyer_id", null: false
+    t.integer "seller_id", null: false
+    t.integer "commission_type_id", null: false
     t.decimal "price"
     t.string "stage"
     t.string "description"
+    t.float "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["buyer_id"], name: "index_commissions_on_buyer_id"
@@ -97,7 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_12_072522) do
     t.text "bio"
     t.text "portfolio"
     t.float "seller_rating"
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sellers_on_user_id"

@@ -38,7 +38,7 @@
     <h1>Your Commission Request was Accepted by the Artist</h1>
     <p>Your commission request has been accepted by the artist. Please check the details below:</p>
     <p><strong>Commission Type:</strong> <%= @commission.commission_type.title %></p>
-    <p><strong>Price:</strong> PHP <%= number_to_currency(@commission.price) %></p>
+    <p><strong>Price:</strong> PHP<%= (@commission.price) %></p>
     <p><strong>Description:</strong> <%= @commission.description %></p>
     <p><strong>Status:</strong> <%= @commission.stage %></p>
     <p>If you have any questions or need further information, please don't hesitate to reach out to us via this email address. We are here to assist you throughout the process. 🤝</p>

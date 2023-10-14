@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
     mail(to: @commission.buyer.user.email, subject: 'Your Commission is Pending')
   end
 
-  def status_progress_email_buyer (commission)
+  def status_progress_email_buyer(commission)
     @commission = commission
     mail(to: @commission.buyer.user.email, subject: 'Your Commission Request was Accepted by the Artist')
   end

@@ -13,9 +13,9 @@ class CommissionsController < ApplicationController
     )
 
     if @commission.save
+      render json: { success: true, message: "Commission created successfully", commission: @commission }
       UserMailer.status_pending_email_seller(@commission).deliver_now
       UserMailer.status_pending_email_buyer(@commission).deliver_now
-      render json: { success: true, message: "Commission created successfully", commission: @commission }
     else
       render json: { success: false, errors: @commission.errors.full_messages }, status: :unprocessable_entity
     end
@@ -102,6 +102,7 @@ class CommissionsController < ApplicationController
     if @commission.stage == "Completed" && current_user.user_type == 'Buyer'
       if params[:rating].to_i >= 1 && params[:rating].to_i <= 5
         if @commission.update(rating: params[:rating])
+          @commission.seller.update_seller_rating
           render json: { message: "Commission rated successfully" }
         else
           render json: { errors: @commission.errors.full_messages }, status: :unprocessable_entity
