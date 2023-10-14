@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       if user.authenticate(params[:password])
         if user.status
           token = AuthHelper.generate_token(user.id, user.user_type)
-          user_data = { token: token, user_type: user.user_type, username: user.username, id: user.id }
+          user_data = { token: token, user_type: user.user_type, username: user.username, id: user.id, city: user.city }
 
           render json: user_data, status: :ok
         else
