@@ -6,18 +6,27 @@ class SellersController < ApplicationController
   include ActiveStorage::SetCurrent
 
   def index
-    sellers = User.where(user_type: 'Seller').includes(:seller).all
+    sellers = User.where(user_type: 'Seller', status: true).includes(:seller).all
     seller_data = sellers.map do |seller|
-      {
-        username: seller.username,
-        city: seller.city,
-        avatar_url: seller.seller&.avatar&.service_url,
-        rating: seller.seller&.seller_rating || 0.0
-      }
+      if seller.seller.present?
+        avatar_url = seller.seller.avatar.attached? ? url_for(seller.seller.avatar) : nil
+        {
+          username: seller.username,
+          city: seller.city,
+          avatar_url: avatar_url,
+          rating: seller.seller.seller_rating
+        }
+      else
+        {
+          username: seller.username,
+          city: seller.city,
+          avatar_url: nil,
+          rating: 0.0
+        }
+      end
     end
     render json: { data: seller_data }
   end
-
 
   def show
     username = params[:username]
@@ -73,19 +82,19 @@ class SellersController < ApplicationController
   end
 
   def works1_destroy
-    destroy_image(:works1, 'Seller works 1')
+    destroy_image(:works1, 'Seller works1')
   end
 
   def works2_destroy
-    destroy_image(:works2, 'Seller works 2')
+    destroy_image(:works2, 'Seller works2')
   end
 
   def works3_destroy
-    destroy_image(:works3, 'Seller works 3')
+    destroy_image(:works3, 'Seller works3')
   end
 
   def works4_destroy
-    destroy_image(:works4, 'Seller works 4')
+    destroy_image(:works4, 'Seller works4')
   end
 
   def update_bio

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You Have a Pending Commission</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: #f4f4f4;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+    .signature {
+      color: #D8C1A9;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+    <h1>You Have a Pending Commission</h1>
+    <p>You have a pending commission. Please check the details below:</p>
+    <p><strong>Commission Type:</strong> <%= @commission.commission_type.title %></p>
+    <p><strong>Price:</strong> PHP<%= (@commission.price) %></p>
+    <p><strong>Additional Information:</strong> <%= @commission.description %></p>
+    <p><strong>Status:</strong> <%= @commission.stage %></p>
+    <p><strong>Buyer Contact Information:</strong> <%= @commission.buyer.user.contact_information.present? ? @commission.buyer.user.contact_information : "No contact information available" %></p>
+    <p>If you have any questions or need assistance, feel free to reach out via this email. We are committed to ensuring that you have an exceptional experience. 🤝</p>
+    <p class="signature">Best regards, <br> The Project:CAMAY Team</p>
+  </div>
+</body>
+</html>

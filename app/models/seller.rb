@@ -1,7 +1,10 @@
 class Seller < ApplicationRecord
   belongs_to :user
+  has_many :commissions
+  has_many :commission_types
 
-  validates :bio, presence: true, length: { maximum: 101 }
+
+  validates :bio, length: { maximum: 101 }
 
   after_initialize :set_defaults
 
@@ -15,7 +18,12 @@ class Seller < ApplicationRecord
   def set_defaults
     self.bio ||= ''
     self.portfolio ||= ''
-    self.seller_rating ||= 0.0
+    self.seller_rating ||= update_seller_rating
   end
 
+  def update_seller_rating
+    valid_ratings = commissions.where.not(rating: nil).pluck(:rating)
+    self.seller_rating = valid_ratings.empty? ? 0.0 : (valid_ratings.sum.to_f / valid_ratings.size).round(2)
+    save
+  end
 end
