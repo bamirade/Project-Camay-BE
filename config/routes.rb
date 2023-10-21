@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  get 'wake', to: 'users#wake'
   post 'register', to: 'registrations#create'
   post 'reconfirm', to: 'registrations#user_reconfirm'
 

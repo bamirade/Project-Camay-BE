@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:confirm_email]
+  skip_before_action :authenticate_user!, only: [:confirm_email, :wake]
   before_action :find_user, only: [:update_password, :update_info]
   include ActiveStorage::SetCurrent
 
@@ -52,6 +52,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def wake
+    render json: { message: 'Awake' }, status: :ok
+  end
 
   private
 
